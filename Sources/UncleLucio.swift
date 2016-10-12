@@ -25,10 +25,39 @@ extension Request {
     }
 }
 
+extension Array {
+    func randomItem() -> Element {
+        let index = Int(arc4random_uniform(UInt32(self.count)))
+        return self[index]
+    }
+}
+
 class JokesDB {
+    private let jokes: [Joke] = [
+        ("Harry", "Harry up and let me in!"),
+        ("Wanda", "Wanda hang out with me right now?"),
+        ("Olive", "Olive you and I don’t care who knows it!"),
+        ("Ho-ho", "You know, your Santa impression could use a little work."),
+        ("Hanna", "...Hanna partridge in a pear tree!"),
+        ("Mary and Abbey", "Mary Christmas and Abbey New Year!"),
+        ("Irish", "Irish you a Merry Christmas!"),
+        ("Yule log", "Yule log the door after you let me in, won’t you?"),
+        ("Ya", "I’m excited to see you too!"),
+        ("Sherlock", "Sherlock your door shut tight!"),
+        ("Scold", "Scold outside—let me in!"),
+        ("Robin", "Robin you! Hand over your cash!"),
+        ("Needle", "Needle little help gettin’ in the door."),
+        ("Nana", "Nana your business who’s there."),
+        ("Luke", "Luke through the keyhole to see!"),
+        ("Isabelle", "Isabelle working, or should I keep knocking?"),
+        ].map {
+            Joke(subject: $0.0,
+                     punchline: $0.1)
+        }
+    
+    
     func randomJoke() -> Joke {
-        return Joke(subject: "Harry",
-                    punchline: "Harry up and let me in!")
+        return jokes.randomItem()
     }
 }
 

@@ -41,7 +41,7 @@ struct WaitingForSubjectReplyState: State {
     func nextState(when message: String) -> (String, State) {
         let text = message.lowercased()
         if text.contains("\(joke.subject.lowercased()) who") {
-            return ("\(joke.punchline)!\nahahah", Done())
+            return ("\(joke.punchline)\nahahah", Done())
         }
         return ("pota", StartState(joke: joke))
     }

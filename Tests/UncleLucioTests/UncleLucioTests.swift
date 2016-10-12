@@ -57,7 +57,7 @@ class UncleLucioTests: XCTestCase {
         let state = WaitingForSubjectReplyState(joke: joke())
         
         let (text, nextState) = state.nextState(when: "\(joke().subject) who")
-        XCTAssertEqual(text, "\(joke().punchline)!\nahahah")
+        XCTAssertEqual(text, "\(joke().punchline)\nahahah")
         XCTAssertTrue(nextState is Done)
     }
 
