@@ -35,18 +35,27 @@ class JokesDB {
 
 class UncleLucio {
     private let jokesDB: JokesDB
+    private var sessions = [String: State]()
     
     init(jokesDB: JokesDB) {
         self.jokesDB = jokesDB
     }
     
     func message(after chatMessage: ChatMessage) -> ChatMessage {
+        let state = sessions[chatMessage.sender] ?? StartState(joke: jokesDB.randomJoke())
+
+        let (text, newState) = state.nextState(when: chatMessage.text ?? "pota")
+        
+        if newState is Done {
+            sessions.removeValue(forKey: chatMessage.sender)
+        } else {
+            sessions[chatMessage.sender] = newState
+        }
         let replyMessage = ChatMessage(sender: chatMessage.recipient,
                                        recipient: chatMessage.sender,
-                                       text: chatMessage.text ?? "pota")
+                                       text: text)
         return replyMessage
 
     }
-    
 }
 
