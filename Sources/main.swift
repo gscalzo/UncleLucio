@@ -10,6 +10,10 @@ let uncleLucio = UncleLucio(jokesDB: JokesDB())
 
 let drop = Droplet()
 
+drop.get("hello") {_ in 
+    "My name is Uncle Lucio"
+}
+
 drop.get("fbwebhook") { request in
     print("get webhook")
     guard let token = request.data["hub.verify_token"]?.string,
