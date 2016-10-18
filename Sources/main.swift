@@ -8,7 +8,7 @@ let fbURL = "https://graph.facebook.com/v2.6/me/messages?access_token=" + PAGE_A
 
 let uncleLucio = UncleLucio(jokesDB: JokesDB())
 
-let drop = Droplet(config: Config(Node("port", "8081")))
+let drop = Droplet()
 
 drop.get("fbwebhook") { request in
     print("get webhook")
@@ -41,6 +41,4 @@ drop.post("fbwebhook") { request in
                          body: replyMessage.toJSON())
 }
 
-drop.run([
-    "default": (host: "unclelucio.com", port: 8081, securityLayer: .none)
-])
+drop.run()
