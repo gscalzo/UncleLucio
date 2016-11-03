@@ -10,7 +10,7 @@ let uncleLucio = UncleLucio(jokesDB: JokesDB())
 
 let drop = Droplet()
 
-drop.get("hello") {_ in 
+drop.get("hello") {_ in
     "My name is Uncle Lucio"
 }
 

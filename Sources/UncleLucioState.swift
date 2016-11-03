@@ -14,13 +14,40 @@ protocol State {
     func nextState(when message: String) -> (String, State)
 }
 
+extension State {
+    func helpState(when message: String) -> (String, State)? {
+        guard message.lowercased().contains("help") else {
+            return nil
+        }
+        let helpText = "Ask me for a joke, and I'll tell you a knock-knock joke\n" +
+            "The knock-knock joke is a type of joke, in the format of \"call and response\"," +
+            " where the response contains a pun.\n" +
+            "The standard format has five lines:\n" +
+            "1 -The punster: Knock, knock!\n" +
+            "2 -The recipient: Who's there?\n" +
+            "3 -The punster: a variable response, sometimes involving a name.\n" +
+            "4 -The recipient: a repetition of the response followed by who?\n" +
+            "5 -The punster: the punch line, which typically involves a pun-based misusage of the word set up during the response.\n" +
+            "For example:\n" +
+            "1 - The punster: Knock, knock!\n" +
+            "2 - The recipient: Who's there?\n" +
+            "3 - The punster: Woo.\n" +
+            "4 - The recipient: Woo who?\n" +
+            "5 - The punster: Don't get excited. It's just a joke.\n\n" +
+        "Ask me for a joke..."
+        
+        return (helpText, self)
+
+    }
+}
+
 struct StartState: State {
     let joke: Joke
     func nextState(when message: String) -> (String, State) {
         if message.lowercased().contains("joke") {
             return ("Knock Knock", WaitingForReplyState(joke: joke))
         }
-        return ("pota", self)
+        return helpState(when: message) ?? ("I know a lot of funny jokes. Ask me for a joke!", self)
     }
 }
 
@@ -32,7 +59,7 @@ struct WaitingForReplyState: State {
             text.contains("who is there") {
             return ("\(joke.subject)!", WaitingForSubjectReplyState(joke: joke))
         }
-        return ("pota", StartState(joke: joke))
+        return helpState(when: message) ?? ("Wrong: you should say \"Who's there?\"", self)
     }
 }
 
@@ -43,7 +70,7 @@ struct WaitingForSubjectReplyState: State {
         if text.contains("\(joke.subject.lowercased()) who") {
             return ("\(joke.punchline)\nahahah", Done())
         }
-        return ("pota", StartState(joke: joke))
+        return helpState(when: message) ?? ("Wrong! You should say \"\(joke.subject) who?\"", self)
     }
 }
 
